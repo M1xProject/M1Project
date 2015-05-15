@@ -1141,6 +1141,7 @@ void MapPort()
 static const char *strDNSSeed[][2] = {
     {"104.236.190.40", "104.236.190.40"},
     {"198.199.113.123", "198.199.113.123"},
+	{"107.170.240.91", "107.170.240.91"},
 };
 
 void ThreadDNSAddressSeed(void* parg)

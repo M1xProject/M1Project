@@ -1008,7 +1008,7 @@ uint256 WantedByOrphan(const CBlock* pblockOrphan)
 int64_t GetProofOfWorkReward(int64_t nFees)
 {
     int64_t nSubsidy = 0;
-    if(pindexBest->nHeight <= nLastPowBlock) {
+    if(pindexBest->nHeight <= 2000) {
         nSubsidy = 52 * COIN;
 		int factor = (pindexBest->nHeight / 200) + 1;
 		nSubsidy /= factor;
