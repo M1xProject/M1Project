@@ -81,6 +81,10 @@ private:
     QAction *quitAction;
     QAction *sendCoinsAction;
     QAction *addressBookAction;
+	QAction *bittrexAction;
+	QAction *blockexplorerAction;
+	QAction *botAction;
+	QAction *testAction;
     QAction *signMessageAction;
     QAction *verifyMessageAction;
     QAction *aboutAction;

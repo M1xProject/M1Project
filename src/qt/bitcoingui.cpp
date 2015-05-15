@@ -78,8 +78,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     notificator(0),
     rpcConsole(0)
 {
-    resize(850, 550);
-    setWindowTitle(tr("M1") + " - " + tr("Wallet"));
+    resize(860, 525);
+    setWindowTitle(tr("M1") + "" + tr(""));
 #ifndef Q_OS_MAC
     qApp->setWindowIcon(QIcon(":icons/bitcoin"));
     setWindowIcon(QIcon(":icons/bitcoin"));
@@ -218,13 +218,13 @@ void BitcoinGUI::createActions()
     overviewAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_1));
     tabGroup->addAction(overviewAction);
 
-    sendCoinsAction = new QAction(QIcon(":/icons/send"), tr("&Send coins"), this);
+    sendCoinsAction = new QAction(QIcon(":/icons/send"), tr("&Send Coins"), this);
     sendCoinsAction->setToolTip(tr("Send coins to a M1 address"));
     sendCoinsAction->setCheckable(true);
     sendCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_2));
     tabGroup->addAction(sendCoinsAction);
 
-    receiveCoinsAction = new QAction(QIcon(":/icons/receiving_addresses"), tr("&Receive coins"), this);
+    receiveCoinsAction = new QAction(QIcon(":/icons/receiving_addresses"), tr("&Receive Coins"), this);
     receiveCoinsAction->setToolTip(tr("Show the list of addresses for receiving payments"));
     receiveCoinsAction->setCheckable(true);
     receiveCoinsAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_3));
@@ -241,6 +241,30 @@ void BitcoinGUI::createActions()
     addressBookAction->setCheckable(true);
     addressBookAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
     tabGroup->addAction(addressBookAction);
+	
+	bittrexAction = new QAction(QIcon(":/icons/bittrex"), tr("&Exchanges"), this);
+    bittrexAction->setToolTip(tr("Coming soon"));
+    bittrexAction->setCheckable(false);
+    bittrexAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
+    tabGroup->addAction(bittrexAction);
+	
+	blockexplorerAction = new QAction(QIcon(":/icons/blockexplorer"), tr("&Block Explorer"), this);
+    blockexplorerAction->setToolTip(tr("Coming soon"));
+    blockexplorerAction->setCheckable(false);
+    blockexplorerAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_9));
+    tabGroup->addAction(blockexplorerAction);
+	
+	botAction = new QAction(QIcon(":/icons/bot"), tr("&Trade Bot"), this);
+    botAction->setToolTip(tr("Coming soon"));
+    botAction->setCheckable(false);
+    botAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
+    tabGroup->addAction(botAction);
+	
+	testAction = new QAction(QIcon(":/icons/test"), tr("&Backtesting"), this);
+    testAction->setToolTip(tr("Coming soon"));
+    testAction->setCheckable(false);
+    testAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_8));
+    tabGroup->addAction(testAction);
 
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(gotoOverviewPage()));
@@ -337,16 +361,31 @@ void BitcoinGUI::createMenuBar()
 void BitcoinGUI::createToolBars()
 {
     QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
+	toolbar->setObjectName("toolbar");
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	addToolBar(Qt::LeftToolBarArea,toolbar);
+    toolbar->setOrientation(Qt::Vertical);
+    toolbar->setMovable(false);
     toolbar->addAction(overviewAction);
     toolbar->addAction(sendCoinsAction);
     toolbar->addAction(receiveCoinsAction);
     toolbar->addAction(historyAction);
     toolbar->addAction(addressBookAction);
+	toolbar->addAction(bittrexAction);
+	toolbar->addAction(blockexplorerAction);
+	toolbar->addAction(botAction);
+	toolbar->addAction(testAction);
+	toolbar->setStyleSheet("#toolbar { border:1px;height:100%;padding-top:100px; background: transparent; text-align: center; color: black;min-width:135px;max-width:135px;} QToolBar QToolButton:hover {background-color: #8D8D8D; color: white;} QToolBar QToolButton:selected {background-color: #8D8D8D; color: white;} QToolBar QToolButton:checked {background-color: #8D8D8D; color: white;} QToolBar QToolButton:pressed {background-color: #8D8D8D; color: white;} QToolBar QToolButton { margin: 2px;font-family:'Arial'; font-size:14px; min-width:130px;max-width:130px; min-height:40px;max-height:40px; color: black; text-align: center; border: 1px solid #3A3939;}");
+	
 
     QToolBar *toolbar2 = addToolBar(tr("Actions toolbar"));
+	toolbar2->setObjectName("toolbar2");
     toolbar2->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	addToolBar(Qt::LeftToolBarArea,toolbar2);
+    toolbar2->setOrientation(Qt::Vertical);
+    toolbar2->setMovable( false );
     toolbar2->addAction(exportAction);
+	toolbar2->setStyleSheet("#toolbar2 { border:1px;height:100%;padding-top:100px; background: transparent; text-align: center; color: black;min-width:135px;max-width:135px;} QToolBar QToolButton:hover {background-color: #8D8D8D; color: white;} QToolBar QToolButton:selected {background-color: #8D8D8D; color: white;} QToolBar QToolButton:checked {background-color: #8D8D8D; color: white;} QToolBar QToolButton:pressed {background-color: #8D8D8D; color: white;} QToolBar QToolButton { margin: 2px;font-family:'Arial'; font-size:14px; min-width:130px;max-width:130px; min-height:40px;max-height:40px; color: black; text-align: center; border: 1px solid #3A3939;}");
 }
 
 void BitcoinGUI::setClientModel(ClientModel *clientModel)
