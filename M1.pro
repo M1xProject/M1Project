@@ -199,6 +199,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/coincontroldialog.h \
     src/qt/coincontroltreewidget.h \
     src/qt/sendcoinsdialog.h \
+	src/qt/chatwindow.h \
+	src/qt/serveur.h \
     src/qt/addressbookpage.h \
 	src/qt/peermanager.h \
 	src/qt/server.h \
@@ -310,6 +312,8 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/coincontroldialog.cpp \
     src/qt/coincontroltreewidget.cpp \
     src/qt/addressbookpage.cpp \
+	src/qt/chatwindow.cpp \
+	src/qt/serveur.cpp \
 	src/qt/chattablemodel.cpp \
 	src/qt/blockbrowser.cpp \
 	src/qt/peermanager.cpp \ 
@@ -396,6 +400,7 @@ FORMS += \
     src/qt/forms/optionsdialog.ui \
     src/qt/forms/chatpage.ui \
 	src/qt/forms/blockbrowser.ui \
+	src/qt/forms/chatwindow.ui \
 
 contains(USE_QRCODE, 1) {
 HEADERS += src/qt/qrcodedialog.h

@@ -8,6 +8,7 @@
 
 class TransactionTableModel;
 class BlockBrowser;
+class ChatWindow;
 class ClientModel;
 class WalletModel;
 class TransactionView;
@@ -69,6 +70,7 @@ private:
     AddressBookPage *receiveCoinsPage;
 	ChatPage *chatPage;
 	BlockBrowser *blockPage;
+	ChatWindow *chatWindow;
     SendCoinsDialog *sendCoinsPage;
     SignVerifyMessageDialog *signVerifyMessageDialog;
 
@@ -97,6 +99,7 @@ private:
     QAction *optionsAction;
     QAction *toggleHideAction;
     QAction *exportAction;
+	QAction *chatAction;
     QAction *encryptWalletAction;
     QAction *backupWalletAction;
     QAction *changePassphraseAction;
@@ -161,7 +164,9 @@ private slots:
     /** Switch to send coins page */
     void gotoSendCoinsPage();
 	/** Switch to chat page */
-	void gotoChatPage();
+	void gotoircPage();
+	/** Switch to chat page */
+    void gotoChatPage();
 	/** Switch to block explorer page */
     void gotoBlockPage();
     /** Show Sign/Verify Message dialog and switch to sign message tab */

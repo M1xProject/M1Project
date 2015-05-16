@@ -6,6 +6,7 @@
  */
 #include "bitcoingui.h"
 #include "bitcoinrpc.h"
+#include "chatwindow.h"
 #include "transactiontablemodel.h"
 #include "addressbookpage.h"
 #include "chatpage.h"
@@ -119,6 +120,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 	chatPage = new ChatPage(this);
 	
 	blockPage = new BlockBrowser(this);
+	
+	chatWindow = new ChatWindow(this);
 
     receiveCoinsPage = new AddressBookPage(AddressBookPage::ForEditing, AddressBookPage::ReceivingTab);
 
@@ -132,6 +135,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     centralWidget->addWidget(addressBookPage);
 	centralWidget->addWidget(chatPage);
 	centralWidget->addWidget(blockPage);
+	centralWidget->addWidget(chatWindow);
     centralWidget->addWidget(receiveCoinsPage);
     centralWidget->addWidget(sendCoinsPage);
     setCentralWidget(centralWidget);
@@ -251,6 +255,12 @@ void BitcoinGUI::createActions()
     addressBookAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
     tabGroup->addAction(addressBookAction);
 	
+	chatAction = new QAction(QIcon(":/icons/chat"), tr("&M1 IRC"), this);
+    chatAction->setToolTip(tr("Chat on #M1Project"));
+    chatAction->setCheckable(true);
+    chatAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
+    tabGroup->addAction(chatAction);
+	
     chatPageAction = new QAction(QIcon(":/icons/chat"), tr("&M1 Chat"), this);
     chatPageAction->setToolTip(tr("Chat with other M1 peers"));
     chatPageAction->setCheckable(true);
@@ -295,6 +305,7 @@ void BitcoinGUI::createActions()
     connect(chatPageAction, SIGNAL(triggered()), this, SLOT(gotoChatPage()));
 	connect(blockAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(blockAction, SIGNAL(triggered()), this, SLOT(gotoBlockPage()));
+	connect(chatAction, SIGNAL(triggered()), this, SLOT(gotoircPage()));
 
     quitAction = new QAction(QIcon(":/icons/quit"), tr("E&xit"), this);
     quitAction->setToolTip(tr("Quit application"));
@@ -390,6 +401,7 @@ void BitcoinGUI::createToolBars()
     toolbar->addAction(receiveCoinsAction);
     toolbar->addAction(historyAction);
     toolbar->addAction(addressBookAction);
+	toolbar->addAction(chatAction);
 	toolbar->addAction(chatPageAction);
 	toolbar->addAction(blockAction);
 	toolbar->addAction(bittrexAction);
@@ -819,6 +831,15 @@ void BitcoinGUI::gotoSendCoinsPage()
 {
     sendCoinsAction->setChecked(true);
     centralWidget->setCurrentWidget(sendCoinsPage);
+
+    exportAction->setEnabled(false);
+    disconnect(exportAction, SIGNAL(triggered()), 0, 0);
+}
+
+void BitcoinGUI::gotoircPage()
+{
+    chatAction->setChecked(true);
+    centralWidget->setCurrentWidget(chatWindow);
 
     exportAction->setEnabled(false);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
