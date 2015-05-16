@@ -1031,15 +1031,15 @@ uint64_t GetInterestRate(const CBlockIndex* pindexLast, bool wholeCents)
     double weight;
     
     // Post fork to new weight calculation
-    if (pindexLast && pindexLast->nHeight > nNewInterestFork)
+    if (pindexLast && pindexLast->nHeight > 5000)
         weight = GetPoSKernelPS(pindexLast);
     else
         weight = GetPoSKernelPS();
 
     uint64_t rate = COIN_YEAR_REWARD;
-    if(weight > 16384)
+    if(weight > 20)
         rate = std::max(COIN_YEAR_REWARD,
-                        std::min(static_cast<int64_t>(COIN_YEAR_REWARD * log(weight / 16384.0)),
+                        std::min(static_cast<int64_t>(COIN_YEAR_REWARD * log(weight / 20)),
                                 10 * COIN_YEAR_REWARD));
     return wholeCents ? 100 * rate : rate;
 }

@@ -7,11 +7,13 @@
 #include <stdint.h>
 
 class TransactionTableModel;
+class BlockBrowser;
 class ClientModel;
 class WalletModel;
 class TransactionView;
 class OverviewPage;
 class AddressBookPage;
+class ChatPage;
 class SendCoinsDialog;
 class SignVerifyMessageDialog;
 class Notificator;
@@ -65,6 +67,8 @@ private:
     QWidget *transactionsPage;
     AddressBookPage *addressBookPage;
     AddressBookPage *receiveCoinsPage;
+	ChatPage *chatPage;
+	BlockBrowser *blockPage;
     SendCoinsDialog *sendCoinsPage;
     SignVerifyMessageDialog *signVerifyMessageDialog;
 
@@ -81,6 +85,7 @@ private:
     QAction *quitAction;
     QAction *sendCoinsAction;
     QAction *addressBookAction;
+	QAction *chatPageAction;
 	QAction *bittrexAction;
 	QAction *blockexplorerAction;
 	QAction *botAction;
@@ -99,6 +104,7 @@ private:
     QAction *lockWalletAction;
     QAction *aboutQtAction;
     QAction *openRPCConsoleAction;
+	QAction *blockAction;
 
     QSystemTrayIcon *trayIcon;
     Notificator *notificator;
@@ -149,11 +155,15 @@ private slots:
     void gotoHistoryPage();
     /** Switch to address book page */
     void gotoAddressBookPage();
+	
     /** Switch to receive coins page */
     void gotoReceiveCoinsPage();
     /** Switch to send coins page */
     void gotoSendCoinsPage();
-
+	/** Switch to chat page */
+	void gotoChatPage();
+	/** Switch to block explorer page */
+    void gotoBlockPage();
     /** Show Sign/Verify Message dialog and switch to sign message tab */
     void gotoSignMessageTab(QString addr = "");
     /** Show Sign/Verify Message dialog and switch to verify message tab */

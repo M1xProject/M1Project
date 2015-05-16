@@ -7,6 +7,7 @@
 #include "optionsmodel.h"
 #include "guiutil.h"
 #include "guiconstants.h"
+#include "chatpage.h"
 
 #include "init.h"
 #include "ui_interface.h"
