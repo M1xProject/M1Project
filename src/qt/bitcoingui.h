@@ -13,8 +13,9 @@ class ClientModel;
 class WalletModel;
 class TransactionView;
 class OverviewPage;
+class BittrexPage;
+class SocialPage;
 class AddressBookPage;
-class ChatPage;
 class SendCoinsDialog;
 class SignVerifyMessageDialog;
 class Notificator;
@@ -68,7 +69,8 @@ private:
     QWidget *transactionsPage;
     AddressBookPage *addressBookPage;
     AddressBookPage *receiveCoinsPage;
-	ChatPage *chatPage;
+	BittrexPage *bittrexPage;
+    SocialPage *socialPage;
 	BlockBrowser *blockPage;
 	ChatWindow *chatWindow;
     SendCoinsDialog *sendCoinsPage;
@@ -87,10 +89,11 @@ private:
     QAction *quitAction;
     QAction *sendCoinsAction;
     QAction *addressBookAction;
-	QAction *chatPageAction;
-	QAction *bittrexAction;
+	QAction *bittrexPageAction;
+    QAction *socialPageAction;
 	QAction *blockexplorerAction;
 	QAction *botAction;
+	QAction *arbitrageAction;
 	QAction *testAction;
     QAction *signMessageAction;
     QAction *verifyMessageAction;
@@ -165,8 +168,10 @@ private slots:
     void gotoSendCoinsPage();
 	/** Switch to chat page */
 	void gotoircPage();
-	/** Switch to chat page */
-    void gotoChatPage();
+	/** Switch to bittrex page */
+	void gotoBittrexPage();
+    /** Switch to social page */
+    void gotoSocialPage();
 	/** Switch to block explorer page */
     void gotoBlockPage();
     /** Show Sign/Verify Message dialog and switch to sign message tab */

@@ -8,19 +8,40 @@ DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
 CONFIG += no_include_pwd
 CONFIG += thread
 CONFIG += static
-QT += core gui network
+
+
+BOOST_LIB_SUFFIX=-mgw49-mt-s-1_55
+BOOST_INCLUDE_PATH=C:/deps/boost_1_55_0
+BOOST_LIB_PATH=C:/deps/boost_1_55_0/stage/lib
+BDB_INCLUDE_PATH=C:/deps/db-4.8.30.NC/build_unix
+BDB_LIB_PATH=C:/deps/db-4.8.30.NC/build_unix
+OPENSSL_INCLUDE_PATH=C:/deps/openssl-1.0.1j/include
+OPENSSL_LIB_PATH=C:/deps/openssl-1.0.1j
+MINIUPNPC_INCLUDE_PATH=C:/deps/
+MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
+QRENCODE_INCLUDE_PATH=C:/deps/qrencode-3.4.4
+QRENCODE_LIB_PATH=C:/deps/qrencode-3.4.4/.libs
+LIBEVENT_INCLUDE_PATH=C:/deps/libevent-2.0.21-stable/include
+LIBEVENT_LIB_PATH=C:/deps/libevent-2.0.21-stable/.libs
+OBJECTS_DIR = build
+MOC_DIR = build
+UI_DIR = build
+
+
+QT += core gui network widgets webkitwidgets
+
 greaterThan(QT_MAJOR_VERSION, 4): 
 
-QT += core gui network
+QT += core gui network widgets webkitwidgets
 
 lessThan(QT_MAJOR_VERSION, 5):
-QT += core gui network
+QT += core gui network widgets webkitwidgets
 CONFIG += static
 QMAKE_CXXFLAGS = -fpermissive
 
 greaterThan(QT_MAJOR_VERSION, 4) {
 
-QT += widget network
+QT += core gui network widgets webkitwidgets
 
     DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0
 }
@@ -199,20 +220,21 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/coincontroldialog.h \
     src/qt/coincontroltreewidget.h \
     src/qt/sendcoinsdialog.h \
-	src/qt/chatwindow.h \
-	src/qt/serveur.h \
+    src/qt/chatwindow.h \
+    src/qt/bittrexpage.h \
+    src/qt/serveur.h \
+    src/qt/socialpage.h \
     src/qt/addressbookpage.h \
-	src/qt/peermanager.h \
-	src/qt/server.h \
-	src/qt/chatpage.h \
-	src/qt/chattablemodel.h \
+    src/qt/peermanager.h \
+    src/qt/server.h \
+    src/qt/chattablemodel.h \
     src/qt/chatconnection.h \
-	src/qt/blockbrowser.h \
+    src/qt/blockbrowser.h \
     src/qt/signverifymessagedialog.h \
     src/qt/aboutdialog.h \
     src/qt/editaddressdialog.h \
     src/qt/bitcoinaddressvalidator.h \
-	src/qt/client.h \
+    src/qt/client.h \
     src/alert.h \
     src/addrman.h \
     src/base58.h \
@@ -312,14 +334,15 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/coincontroldialog.cpp \
     src/qt/coincontroltreewidget.cpp \
     src/qt/addressbookpage.cpp \
-	src/qt/chatwindow.cpp \
-	src/qt/serveur.cpp \
-	src/qt/chattablemodel.cpp \
-	src/qt/blockbrowser.cpp \
-	src/qt/peermanager.cpp \ 
-	src/qt/server.cpp \
-	src/qt/chatpage.cpp \ 
-	src/qt/chatconnection.cpp \
+    src/qt/chatwindow.cpp \
+    src/qt/serveur.cpp \
+    src/qt/chattablemodel.cpp \
+    src/qt/blockbrowser.cpp \
+    src/qt/bittrexpage.cpp \
+    src/qt/peermanager.cpp \
+    src/qt/server.cpp \
+    src/qt/socialpage.cpp \
+    src/qt/chatconnection.cpp \
     src/qt/signverifymessagedialog.cpp \
     src/qt/aboutdialog.cpp \
     src/qt/editaddressdialog.cpp \
@@ -398,9 +421,10 @@ FORMS += \
     src/qt/forms/askpassphrasedialog.ui \
     src/qt/forms/rpcconsole.ui \
     src/qt/forms/optionsdialog.ui \
-    src/qt/forms/chatpage.ui \
-	src/qt/forms/blockbrowser.ui \
-	src/qt/forms/chatwindow.ui \
+    src/qt/forms/blockbrowser.ui \
+    src/qt/forms/chatwindow.ui \
+    src/qt/forms/bittrexpage.ui \
+    src/qt/forms/socialpage.ui
 
 contains(USE_QRCODE, 1) {
 HEADERS += src/qt/qrcodedialog.h

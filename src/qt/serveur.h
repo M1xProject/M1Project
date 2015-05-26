@@ -20,7 +20,7 @@
 #include <QWidget>
 #include <QListView>
 #include <QTextEdit>
-#include <QtGui>
+#include <QtWidgets>
 #include <QtNetwork>
 #include <QSystemTrayIcon>
 

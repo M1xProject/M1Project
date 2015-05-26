@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BittrexPage</class>
+ <widget class="QWidget" name="BittrexPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>725</width>
+    <height>630</height>
+   </rect>
+  </property>
+  <property name="acceptDrops">
+   <bool>false</bool>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>725</width>
+     <height>630</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>400</width>
+     <height>300</height>
+    </size>
+   </property>
+   <property name="tabPosition">
+    <enum>QTabWidget::North</enum>
+   </property>
+   <property name="tabShape">
+    <enum>QTabWidget::Triangular</enum>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>16</width>
+     <height>16</height>
+    </size>
+   </property>
+   <property name="elideMode">
+    <enum>Qt::ElideNone</enum>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <widget class="QWidget" name="Bittrex">
+    <attribute name="title">
+     <string>       Bittrex       </string>
+    </attribute>
+    <widget class="QWebView" name="webView">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>725</width>
+       <height>630</height>
+      </rect>
+     </property>
+     <property name="url">
+      <url>
+       <string>about:blank</string>
+      </url>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="BTER">
+    <attribute name="title">
+     <string>       BTER       </string>
+    </attribute>
+    <widget class="QWebView" name="webView_2">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>725</width>
+       <height>630</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>725</width>
+       <height>600</height>
+      </size>
+     </property>
+     <property name="url">
+      <url>
+       <string>about:blank</string>
+      </url>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="Cryptsy">
+    <attribute name="title">
+     <string>       Cryptsy       </string>
+    </attribute>
+    <widget class="QWebView" name="webView_3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>725</width>
+       <height>630</height>
+      </rect>
+     </property>
+     <property name="url">
+      <url>
+       <string>about:blank</string>
+      </url>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="Poloniex">
+    <attribute name="title">
+     <string>       Poloniex       </string>
+    </attribute>
+    <widget class="QWebView" name="webView_4">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>725</width>
+       <height>630</height>
+      </rect>
+     </property>
+     <property name="url">
+      <url>
+       <string>about:blank</string>
+      </url>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="CCEX">
+    <attribute name="title">
+     <string>       C-CEX       </string>
+    </attribute>
+    <widget class="QWebView" name="webView_5">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>725</width>
+       <height>630</height>
+      </rect>
+     </property>
+     <property name="url">
+      <url>
+       <string>about:blank</string>
+      </url>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="Yobit">
+    <attribute name="title">
+     <string>       Yobit       </string>
+    </attribute>
+    <widget class="QWebView" name="webView_6">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>725</width>
+       <height>630</height>
+      </rect>
+     </property>
+     <property name="url">
+      <url>
+       <string>about:blank</string>
+      </url>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="Bleutrade">
+    <attribute name="title">
+     <string>       Bleutrade       </string>
+    </attribute>
+    <widget class="QWebView" name="webView_8">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>725</width>
+       <height>630</height>
+      </rect>
+     </property>
+     <property name="url">
+      <url>
+       <string>about:blank</string>
+      </url>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header>QtWebKitWidgets/QWebView</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -9,8 +9,9 @@
 #include "chatwindow.h"
 #include "transactiontablemodel.h"
 #include "addressbookpage.h"
-#include "chatpage.h"
+#include "bittrexpage.h"
 #include "blockbrowser.h"
+#include "socialpage.h"
 #include "sendcoinsdialog.h"
 #include "signverifymessagedialog.h"
 #include "optionsdialog.h"
@@ -82,8 +83,9 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     notificator(0),
     rpcConsole(0)
 {
-    resize(860, 525);
-    setWindowTitle(tr("M1") + "" + tr(""));
+    //   Width Height
+    resize(910, 450);
+    setWindowTitle(tr("Supply Shock") + "" + tr(""));
 #ifndef Q_OS_MAC
     qApp->setWindowIcon(QIcon(":icons/bitcoin"));
     setWindowIcon(QIcon(":icons/bitcoin"));
@@ -106,6 +108,16 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     // Create the tray icon (or setup the dock icon)
     createTrayIcon();
 
+	QPalette p;
+	p.setColor(QPalette::Window, QColor(0x22, 0x22, 0x22));
+	p.setColor(QPalette::Button, QColor(0x22, 0x22, 0x22));
+	p.setColor(QPalette::Mid, QColor(0x22, 0x22, 0x22));
+	p.setColor(QPalette::Base, QColor(0x22, 0x22, 0x22));
+	p.setColor(QPalette::AlternateBase, QColor(0x22, 0x22, 0x22));
+	setPalette(p);
+	QFile style(":/text/res/text/style.qss");
+	style.open(QFile::ReadOnly);
+	setStyleSheet(QString::fromUtf8(style.readAll()));
     // Create tabs
     overviewPage = new OverviewPage();
 
@@ -117,9 +129,12 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     addressBookPage = new AddressBookPage(AddressBookPage::ForEditing, AddressBookPage::SendingTab);
 	
-	chatPage = new ChatPage(this);
 	
 	blockPage = new BlockBrowser(this);
+	
+	bittrexPage = new BittrexPage(this);
+
+    socialPage = new SocialPage(this);
 	
 	chatWindow = new ChatWindow(this);
 
@@ -133,8 +148,9 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     centralWidget->addWidget(overviewPage);
     centralWidget->addWidget(transactionsPage);
     centralWidget->addWidget(addressBookPage);
-	centralWidget->addWidget(chatPage);
+	centralWidget->addWidget(bittrexPage);
 	centralWidget->addWidget(blockPage);
+    centralWidget->addWidget(socialPage);
 	centralWidget->addWidget(chatWindow);
     centralWidget->addWidget(receiveCoinsPage);
     centralWidget->addWidget(sendCoinsPage);
@@ -260,30 +276,36 @@ void BitcoinGUI::createActions()
     chatAction->setCheckable(true);
     chatAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
     tabGroup->addAction(chatAction);
+
+    socialPageAction = new QAction(QIcon(":/icons/social"), tr("&Social"), this);
+    socialPageAction->setToolTip(tr("M1 Social"));
+    socialPageAction->setCheckable(true);
+    socialPageAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
+    tabGroup->addAction(socialPageAction);
 	
-    chatPageAction = new QAction(QIcon(":/icons/chat"), tr("&M1 Chat"), this);
-    chatPageAction->setToolTip(tr("Chat with other M1 peers"));
-    chatPageAction->setCheckable(true);
-    chatPageAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_8));
-    tabGroup->addAction(chatPageAction);
-	
-	blockAction = new QAction(QIcon(":/icons/blockexplorer"), tr("&Block Explorer"), this);
-    blockAction->setToolTip(tr("Coming soon"));
+    blockAction = new QAction(QIcon(":/icons/blockexplorer"), tr("&Explorers"), this);
+    blockAction->setToolTip(tr("M1 Block Explorers"));
     blockAction->setCheckable(true);
     blockAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_9));
     tabGroup->addAction(blockAction);
 	
-	bittrexAction = new QAction(QIcon(":/icons/bittrex"), tr("&Exchanges"), this);
-    bittrexAction->setToolTip(tr("Coming soon"));
-    bittrexAction->setCheckable(false);
-    bittrexAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
-    tabGroup->addAction(bittrexAction);
+    bittrexPageAction = new QAction(QIcon(":/icons/bittrex"), tr("&Exchanges"), this);
+    bittrexPageAction->setToolTip(tr("M1 Exchanges"));
+    bittrexPageAction->setCheckable(true);
+    bittrexPageAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
+    tabGroup->addAction(bittrexPageAction);
 	
 	botAction = new QAction(QIcon(":/icons/bot"), tr("&Trade Bot"), this);
     botAction->setToolTip(tr("Coming soon"));
     botAction->setCheckable(false);
     botAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
     tabGroup->addAction(botAction);
+	
+    arbitrageAction = new QAction(QIcon(":/icons/arbitrage"), tr("&Auto Arbitrage"), this);
+    arbitrageAction->setToolTip(tr("Coming soon"));
+    arbitrageAction->setCheckable(false);
+    arbitrageAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
+    tabGroup->addAction(arbitrageAction);
 	
 	testAction = new QAction(QIcon(":/icons/test"), tr("&Backtesting"), this);
     testAction->setToolTip(tr("Coming soon"));
@@ -301,11 +323,13 @@ void BitcoinGUI::createActions()
     connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
     connect(addressBookAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(addressBookAction, SIGNAL(triggered()), this, SLOT(gotoAddressBookPage()));
-    connect(chatPageAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
-    connect(chatPageAction, SIGNAL(triggered()), this, SLOT(gotoChatPage()));
 	connect(blockAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(blockAction, SIGNAL(triggered()), this, SLOT(gotoBlockPage()));
 	connect(chatAction, SIGNAL(triggered()), this, SLOT(gotoircPage()));
+	connect(bittrexPageAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+	connect(bittrexPageAction, SIGNAL(triggered()), this, SLOT(gotoBittrexPage()));
+    connect(socialPageAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(socialPageAction, SIGNAL(triggered()), this, SLOT(gotoSocialPage()));
 
     quitAction = new QAction(QIcon(":/icons/quit"), tr("E&xit"), this);
     quitAction->setToolTip(tr("Quit application"));
@@ -390,34 +414,33 @@ void BitcoinGUI::createMenuBar()
 
 void BitcoinGUI::createToolBars()
 {
+
     QToolBar *toolbar = addToolBar(tr("Tabs toolbar"));
 	toolbar->setObjectName("toolbar");
     toolbar->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	addToolBar(Qt::LeftToolBarArea,toolbar);
     toolbar->setOrientation(Qt::Vertical);
     toolbar->setMovable(false);
+
+    QWidget* header = new QWidget();
+    header->setMinimumSize(140, 45);
+    header->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    header->setStyleSheet("QWidget { background-color: rgb(0,0,0); background-repeat: no-repeat; background-image: url(:/images/header); background-position: top center; }");
+    toolbar->addWidget(header);
+
     toolbar->addAction(overviewAction);
     toolbar->addAction(sendCoinsAction);
     toolbar->addAction(receiveCoinsAction);
     toolbar->addAction(historyAction);
     toolbar->addAction(addressBookAction);
+	toolbar->addAction(bittrexPageAction);
+    toolbar->addAction(blockAction);
+    toolbar->addAction(socialPageAction);
 	toolbar->addAction(chatAction);
-	toolbar->addAction(chatPageAction);
-	toolbar->addAction(blockAction);
-	toolbar->addAction(bittrexAction);
 	toolbar->addAction(botAction);
+	toolbar->addAction(arbitrageAction);
 	toolbar->addAction(testAction);
-	toolbar->setStyleSheet("#toolbar { border:1px;height:100%;padding-top:100px; background: transparent; text-align: right; color: black;min-width:135px;max-width:135px;} QToolBar QToolButton:hover {background-color: #8D8D8D; color: white;} QToolBar QToolButton:selected {background-color: #8D8D8D; color: #FFFFFF;} QToolBar QToolButton:checked {background-color: #8D8D8D; color: #FFFFFF;} QToolBar QToolButton:pressed {background-color: #8D8D8D; color: #FFFFFF;} QToolBar QToolButton { margin: 2px;font-family:'Arial'; font-size:14px; min-width:130px;max-width:130px; min-height:40px;max-height:40px; color: black; border: 1px solid #000000;}");
-	
-
-    QToolBar *toolbar2 = addToolBar(tr("Actions toolbar"));
-	toolbar2->setObjectName("toolbar2");
-    toolbar2->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	addToolBar(Qt::LeftToolBarArea,toolbar2);
-    toolbar2->setOrientation(Qt::Vertical);
-    toolbar2->setMovable( false );
-    toolbar2->addAction(exportAction);
-	toolbar2->setStyleSheet("#toolbar2 { border:1px;height:100%;padding-top:100px; background: transparent; text-align: right; color: black;min-width:135px;max-width:135px;} QToolBar QToolButton:hover {background-color: #8D8D8D; color: #FFFFFF;} QToolBar QToolButton:selected {background-color: #8D8D8D; color: #FFFFFF;} QToolBar QToolButton:checked {background-color: #8D8D8D; color: #FFFFFF;} QToolBar QToolButton:pressed {background-color: #8D8D8D; color: #FFFFFF;} QToolBar QToolButton { margin: 2px;font-family:'Arial'; font-size:14px; min-width:130px;max-width:130px; min-height:40px;max-height:40px; color: black; text-align: right; border: 1px solid #000000;}");
+    toolbar->addAction(exportAction);
 }
 
 void BitcoinGUI::setClientModel(ClientModel *clientModel)
@@ -475,7 +498,6 @@ void BitcoinGUI::setWalletModel(WalletModel *walletModel)
         overviewPage->setModel(walletModel);
         addressBookPage->setModel(walletModel->getAddressTableModel());
         receiveCoinsPage->setModel(walletModel->getAddressTableModel());
-		chatPage->setModel(walletModel->getChatTableModel());
         sendCoinsPage->setModel(walletModel);
         signVerifyMessageDialog->setModel(walletModel);
 
@@ -798,14 +820,14 @@ void BitcoinGUI::gotoAddressBookPage()
     connect(exportAction, SIGNAL(triggered()), addressBookPage, SLOT(exportClicked()));
 }
 
-void BitcoinGUI::gotoChatPage()
+void BitcoinGUI::gotoBittrexPage()
 {
-    chatPageAction->setChecked(true);
-    centralWidget->setCurrentWidget(chatPage);
+    bittrexPageAction->setChecked(true);
+    centralWidget->setCurrentWidget(bittrexPage);
 
-    exportAction->setEnabled(true);
+    exportAction->setEnabled(false);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
-    connect(exportAction, SIGNAL(triggered()), chatPage, SLOT(exportClicked()));
+	connect(exportAction, SIGNAL(triggered()), bittrexPage, SLOT(exportClicked()));
 }
 
 void BitcoinGUI::gotoBlockPage()
@@ -852,6 +874,16 @@ void BitcoinGUI::gotoSignMessageTab(QString addr)
 
     if(!addr.isEmpty())
         signVerifyMessageDialog->setAddress_SM(addr);
+}
+
+void BitcoinGUI::gotoSocialPage()
+{
+    socialPageAction->setChecked(true);
+    centralWidget->setCurrentWidget(socialPage);
+
+    exportAction->setEnabled(false);
+    disconnect(exportAction, SIGNAL(triggered()), 0, 0);
+    connect(exportAction, SIGNAL(triggered()), socialPage, SLOT(exportClicked()));
 }
 
 void BitcoinGUI::gotoVerifyMessageTab(QString addr)
