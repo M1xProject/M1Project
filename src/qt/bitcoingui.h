@@ -14,6 +14,7 @@ class WalletModel;
 class TransactionView;
 class OverviewPage;
 class BittrexPage;
+class ShockBot;
 class SocialPage;
 class AddressBookPage;
 class SendCoinsDialog;
@@ -70,6 +71,7 @@ private:
     AddressBookPage *addressBookPage;
     AddressBookPage *receiveCoinsPage;
 	BittrexPage *bittrexPage;
+	ShockBot *shockBot;
     SocialPage *socialPage;
 	BlockBrowser *blockPage;
 	ChatWindow *chatWindow;
@@ -91,10 +93,8 @@ private:
     QAction *addressBookAction;
 	QAction *bittrexPageAction;
     QAction *socialPageAction;
+	QAction *shockBotAction;
 	QAction *blockexplorerAction;
-	QAction *botAction;
-	QAction *arbitrageAction;
-	QAction *testAction;
     QAction *signMessageAction;
     QAction *verifyMessageAction;
     QAction *aboutAction;
@@ -172,6 +172,8 @@ private slots:
 	void gotoBittrexPage();
     /** Switch to social page */
     void gotoSocialPage();
+    /** Switch to ShockBot page */
+    void gotoShockBot();
 	/** Switch to block explorer page */
     void gotoBlockPage();
     /** Show Sign/Verify Message dialog and switch to sign message tab */

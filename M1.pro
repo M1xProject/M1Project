@@ -9,6 +9,25 @@ CONFIG += no_include_pwd
 CONFIG += thread
 CONFIG += static
 
+
+BOOST_LIB_SUFFIX=-mgw49-mt-s-1_55
+BOOST_INCLUDE_PATH=C:/deps/boost_1_55_0
+BOOST_LIB_PATH=C:/deps/boost_1_55_0/stage/lib
+BDB_INCLUDE_PATH=C:/deps/db-4.8.30.NC/build_unix
+BDB_LIB_PATH=C:/deps/db-4.8.30.NC/build_unix
+OPENSSL_INCLUDE_PATH=C:/deps/openssl-1.0.1j/include
+OPENSSL_LIB_PATH=C:/deps/openssl-1.0.1j
+MINIUPNPC_INCLUDE_PATH=C:/deps/
+MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
+QRENCODE_INCLUDE_PATH=C:/deps/qrencode-3.4.4
+QRENCODE_LIB_PATH=C:/deps/qrencode-3.4.4/.libs
+LIBEVENT_INCLUDE_PATH=C:/deps/libevent-2.0.21-stable/include
+LIBEVENT_LIB_PATH=C:/deps/libevent-2.0.21-stable/.libs
+OBJECTS_DIR = build
+MOC_DIR = build
+UI_DIR = build
+
+
 QT += core gui network widgets webkitwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): 
@@ -34,6 +53,22 @@ QT += core gui network widgets webkitwidgets
 # use: BOOST_THREAD_LIB_SUFFIX=_win32-...
 # or when linking against a specific BerkelyDB version: BDB_LIB_SUFFIX=-4.8
 
+# Dependency library locations can be customized with:
+#    BOOST_INCLUDE_PATH, BOOST_LIB_PATH, BDB_INCLUDE_PATH,
+#    BDB_LIB_PATH, OPENSSL_INCLUDE_PATH and OPENSSL_LIB_PATH respectively
+BOOST_LIB_SUFFIX=-mgw49-mt-s-1_55
+BOOST_INCLUDE_PATH=C:/deps/boost_1_55_0
+BOOST_LIB_PATH=C:/deps/boost_1_55_0/stage/lib
+BDB_INCLUDE_PATH=C:/deps/db-4.8.30.NC/build_unix
+BDB_LIB_PATH=C:/deps/db-4.8.30.NC/build_unix
+OPENSSL_INCLUDE_PATH=C:/deps/openssl-1.0.1j/include
+OPENSSL_LIB_PATH=C:/deps/openssl-1.0.1j
+MINIUPNPC_INCLUDE_PATH=C:/deps/
+MINIUPNPC_LIB_PATH=C:/deps/miniupnpc
+QRENCODE_INCLUDE_PATH=C:/deps/qrencode-3.4.4
+QRENCODE_LIB_PATH=C:/deps/qrencode-3.4.4/.libs
+LIBEVENT_INCLUDE_PATH=C:/deps/libevent-2.0.21-stable/include
+LIBEVENT_LIB_PATH=C:/deps/libevent-2.0.21-stable/.libs
 OBJECTS_DIR = build
 MOC_DIR = build
 UI_DIR = build
@@ -129,11 +164,12 @@ SOURCES += src/txdb-leveldb.cpp \
     src/simd.c \
     src/skein.c \
     src/fugue.c \
-    src/hamsi.c \
+    src/hamsi.c 
+
     
 !win32 {
     # we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
-    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a
+    #genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a
 } else {
     # make an educated guess about what the ranlib command is called
     isEmpty(QMAKE_RANLIB) {
@@ -195,6 +231,7 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/chattablemodel.h \
     src/qt/chatconnection.h \
     src/qt/blockbrowser.h \
+	src/qt/shockbot.h \ 
     src/qt/signverifymessagedialog.h \
     src/qt/aboutdialog.h \
     src/qt/editaddressdialog.h \
@@ -288,7 +325,8 @@ HEADERS += src/qt/bitcoingui.h \
     src/sph_hamsi.h \
     src/sph_types.h \
     src/threadsafety.h \
-    src/txdb-leveldb.h \
+    src/txdb-leveldb.h 
+    
     
 
 SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
@@ -303,6 +341,7 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/serveur.cpp \
     src/qt/chattablemodel.cpp \
     src/qt/blockbrowser.cpp \
+	src/qt/shockbot.cpp \
     src/qt/bittrexpage.cpp \
     src/qt/peermanager.cpp \
     src/qt/server.cpp \
@@ -389,7 +428,8 @@ FORMS += \
     src/qt/forms/blockbrowser.ui \
     src/qt/forms/chatwindow.ui \
     src/qt/forms/bittrexpage.ui \
-    src/qt/forms/socialpage.ui
+    src/qt/forms/socialpage.ui \
+    src/qt/forms/shockbot.ui
 
 contains(USE_QRCODE, 1) {
 HEADERS += src/qt/qrcodedialog.h

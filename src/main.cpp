@@ -56,7 +56,7 @@ int nNewInterestFork = NEW_INTEREST_FORK;
 
 int64_t devCoin = 0 * COIN;
 int nCoinbaseMaturity = 100;
-int nNewCoinbaseMaturity = 100;
+int nNewCoinbaseMaturity = 25;
 
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -1037,10 +1037,10 @@ uint64_t GetInterestRate(const CBlockIndex* pindexLast, bool wholeCents)
         weight = GetPoSKernelPS();
 
     uint64_t rate = COIN_YEAR_REWARD;
-    if(weight > 20)
+    if(weight > 1)
         rate = std::max(COIN_YEAR_REWARD,
-                        std::min(static_cast<int64_t>(COIN_YEAR_REWARD * log(weight / 20)),
-                                10 * COIN_YEAR_REWARD));
+                        std::min(static_cast<int64_t>(COIN_YEAR_REWARD * log(weight / 0.001)),
+                                200 * COIN_YEAR_REWARD));
     return wholeCents ? 100 * rate : rate;
 }
 

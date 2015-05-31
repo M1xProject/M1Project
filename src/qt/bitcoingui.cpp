@@ -11,6 +11,7 @@
 #include "addressbookpage.h"
 #include "bittrexpage.h"
 #include "blockbrowser.h"
+#include "shockbot.h"
 #include "socialpage.h"
 #include "sendcoinsdialog.h"
 #include "signverifymessagedialog.h"
@@ -137,6 +138,8 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
     socialPage = new SocialPage(this);
 	
 	chatWindow = new ChatWindow(this);
+	
+    shockBot = new ShockBot(this);
 
     receiveCoinsPage = new AddressBookPage(AddressBookPage::ForEditing, AddressBookPage::ReceivingTab);
 
@@ -151,6 +154,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 	centralWidget->addWidget(bittrexPage);
 	centralWidget->addWidget(blockPage);
     centralWidget->addWidget(socialPage);
+    centralWidget->addWidget(shockBot);
 	centralWidget->addWidget(chatWindow);
     centralWidget->addWidget(receiveCoinsPage);
     centralWidget->addWidget(sendCoinsPage);
@@ -271,7 +275,7 @@ void BitcoinGUI::createActions()
     addressBookAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
     tabGroup->addAction(addressBookAction);
 	
-	chatAction = new QAction(QIcon(":/icons/chat"), tr("&M1 IRC"), this);
+    chatAction = new QAction(QIcon(":/icons/chat"), tr("&IRC"), this);
     chatAction->setToolTip(tr("Chat on #M1Project"));
     chatAction->setCheckable(true);
     chatAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
@@ -289,29 +293,17 @@ void BitcoinGUI::createActions()
     blockAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_9));
     tabGroup->addAction(blockAction);
 	
+    shockBotAction = new QAction(QIcon(":/icons/bot"), tr("&Shock Trader"), this);
+    shockBotAction->setToolTip(tr("Supply Shock Trading Bot"));
+    shockBotAction->setCheckable(true);
+    shockBotAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_8));
+    tabGroup->addAction(shockBotAction);
+	
     bittrexPageAction = new QAction(QIcon(":/icons/bittrex"), tr("&Exchanges"), this);
     bittrexPageAction->setToolTip(tr("M1 Exchanges"));
     bittrexPageAction->setCheckable(true);
     bittrexPageAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
     tabGroup->addAction(bittrexPageAction);
-	
-	botAction = new QAction(QIcon(":/icons/bot"), tr("&Trade Bot"), this);
-    botAction->setToolTip(tr("Coming soon"));
-    botAction->setCheckable(false);
-    botAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
-    tabGroup->addAction(botAction);
-	
-    arbitrageAction = new QAction(QIcon(":/icons/arbitrage"), tr("&Auto Arbitrage"), this);
-    arbitrageAction->setToolTip(tr("Coming soon"));
-    arbitrageAction->setCheckable(false);
-    arbitrageAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
-    tabGroup->addAction(arbitrageAction);
-	
-	testAction = new QAction(QIcon(":/icons/test"), tr("&Backtesting"), this);
-    testAction->setToolTip(tr("Coming soon"));
-    testAction->setCheckable(false);
-    testAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_8));
-    tabGroup->addAction(testAction);
 
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(overviewAction, SIGNAL(triggered()), this, SLOT(gotoOverviewPage()));
@@ -330,6 +322,8 @@ void BitcoinGUI::createActions()
 	connect(bittrexPageAction, SIGNAL(triggered()), this, SLOT(gotoBittrexPage()));
     connect(socialPageAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(socialPageAction, SIGNAL(triggered()), this, SLOT(gotoSocialPage()));
+	connect(shockBotAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(shockBotAction, SIGNAL(triggered()), this, SLOT(gotoShockBot()));
 
     quitAction = new QAction(QIcon(":/icons/quit"), tr("E&xit"), this);
     quitAction->setToolTip(tr("Quit application"));
@@ -434,12 +428,10 @@ void BitcoinGUI::createToolBars()
     toolbar->addAction(historyAction);
     toolbar->addAction(addressBookAction);
 	toolbar->addAction(bittrexPageAction);
+	toolbar->addAction(shockBotAction);
     toolbar->addAction(blockAction);
     toolbar->addAction(socialPageAction);
 	toolbar->addAction(chatAction);
-	toolbar->addAction(botAction);
-	toolbar->addAction(arbitrageAction);
-	toolbar->addAction(testAction);
     toolbar->addAction(exportAction);
 }
 
@@ -847,6 +839,16 @@ void BitcoinGUI::gotoReceiveCoinsPage()
     exportAction->setEnabled(true);
     disconnect(exportAction, SIGNAL(triggered()), 0, 0);
     connect(exportAction, SIGNAL(triggered()), receiveCoinsPage, SLOT(exportClicked()));
+}
+
+void BitcoinGUI::gotoShockBot()
+{
+    shockBotAction->setChecked(true);
+    centralWidget->setCurrentWidget(shockBot);
+
+    exportAction->setEnabled(true);
+    disconnect(exportAction, SIGNAL(triggered()), 0, 0);
+    connect(exportAction, SIGNAL(triggered()), shockBot, SLOT(exportClicked()));
 }
 
 void BitcoinGUI::gotoSendCoinsPage()
