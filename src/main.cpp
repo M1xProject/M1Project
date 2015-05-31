@@ -2170,6 +2170,9 @@ bool CBlock::AcceptBlock()
         return DoS(10, error("AcceptBlock() : prev block not found"));
     CBlockIndex* pindexPrev = (*mi).second;
     int nHeight = pindexPrev->nHeight+1;
+
+    if (IsProofOfWork() && nHeight > nLastPowBlock)
+        return DoS(100, error("AcceptBlock() : reject proof-of-work at height %d <= %d", nHeight, nLastPowBlock));
     
 	if (IsProofOfStake() && nHeight < nLastPowBlock)
 		return DoS(100, error("AcceptBlock() : reject proof-of-stake at height %d <= %d", nHeight, nLastPowBlock));
